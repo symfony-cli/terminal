@@ -3,6 +3,7 @@ package terminal
 import (
 	"bytes"
 	"fmt"
+	"regexp"
 	"strings"
 )
 
@@ -18,14 +19,18 @@ func SymfonyStyle(stdout *ConsoleOutput, stdin *Input) style {
 }
 
 func (s style) Title(message string) {
+	stripped := regexp.MustCompile(`<.+?>`).ReplaceAllString(message, "")
+	stripped = regexp.MustCompile(`<.*?/>`).ReplaceAllString(stripped, "")
 	fmt.Fprintf(s.stdout, "<comment>%s</>\n", message)
-	fmt.Fprintf(s.stdout, "<comment>%s</>\n", strings.Repeat("=", len(message)))
+	fmt.Fprintf(s.stdout, "<comment>%s</>\n", strings.Repeat("=", len(stripped)))
 	fmt.Fprintln(s.stdout)
 }
 
 func (s style) Section(message string) {
+	stripped := regexp.MustCompile(`<.+?>`).ReplaceAllString(message, "")
+	stripped = regexp.MustCompile(`<.*?/>`).ReplaceAllString(stripped, "")
 	fmt.Fprintf(s.stdout, "<comment>%s</>\n", message)
-	fmt.Fprintf(s.stdout, "<comment>%s</>\n", strings.Repeat("-", len(message)))
+	fmt.Fprintf(s.stdout, "<comment>%s</>\n", strings.Repeat("-", len(stripped)))
 	fmt.Fprintln(s.stdout)
 }
 
