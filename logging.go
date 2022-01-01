@@ -48,7 +48,7 @@ func IsVerbose() bool {
 }
 
 func IsDebug() bool {
-	return Logger.GetLevel() >= zerolog.TraceLevel
+	return Logger.GetLevel() == zerolog.TraceLevel
 }
 
 func GetLogLevel() int {
