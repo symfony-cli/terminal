@@ -62,5 +62,5 @@ func GetLogLevel() int {
 }
 
 func init() {
-	Logger = zerolog.New(Stderr).Level(zerolog.ErrorLevel)
+	Logger = zerolog.New(zerolog.ConsoleWriter{Out: Stderr}).Level(zerolog.ErrorLevel).With().Timestamp().Logger()
 }
