@@ -44,7 +44,7 @@ func SetLogLevel(level int) error {
 }
 
 func IsVerbose() bool {
-	return Logger.GetLevel() > zerolog.ErrorLevel
+	return Logger.GetLevel() < zerolog.ErrorLevel
 }
 
 func IsDebug() bool {

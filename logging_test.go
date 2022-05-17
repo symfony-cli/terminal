@@ -32,21 +32,60 @@ func (ts *LoggingSuite) TestSetLogLevel(c *C) {
 	defer SetLogLevel(1)
 	var err error
 	c.Assert(Logger.GetLevel(), Equals, zerolog.ErrorLevel)
+	c.Assert(GetLogLevel(), Equals, 1)
 
 	err = SetLogLevel(3)
 	c.Assert(err, IsNil)
 	c.Assert(Logger.GetLevel(), Equals, zerolog.InfoLevel)
+	c.Assert(GetLogLevel(), Equals, 3)
 
 	err = SetLogLevel(5)
 	c.Assert(err, IsNil)
 	c.Assert(Logger.GetLevel(), Equals, zerolog.TraceLevel)
+	c.Assert(GetLogLevel(), Equals, 5)
 
 	err = SetLogLevel(1)
 	c.Assert(err, IsNil)
 	c.Assert(Logger.GetLevel(), Equals, zerolog.ErrorLevel)
+	c.Assert(GetLogLevel(), Equals, 1)
 
 	err = SetLogLevel(9)
 	c.Assert(err, Not(IsNil))
 	c.Assert(err.Error(), Equals, "The provided verbosity level '9' is not in the range [1,4]")
 	c.Assert(Logger.GetLevel(), Equals, zerolog.ErrorLevel)
+	c.Assert(GetLogLevel(), Equals, 1)
+}
+
+func (ts *LoggingSuite) TestIsVerbose(c *C) {
+	defer SetLogLevel(1)
+	var err error
+
+	c.Assert(IsVerbose(), Equals, false)
+
+	err = SetLogLevel(3)
+	c.Assert(err, IsNil)
+	c.Assert(IsVerbose(), Equals, true)
+
+	err = SetLogLevel(5)
+	c.Assert(err, IsNil)
+	c.Assert(IsVerbose(), Equals, true)
+}
+
+func (ts *LoggingSuite) TestIsDebug(c *C) {
+	defer SetLogLevel(1)
+	var err error
+
+	c.Assert(IsDebug(), Equals, false)
+
+	err = SetLogLevel(2)
+	c.Assert(err, IsNil)
+	c.Assert(IsDebug(), Equals, false)
+
+	err = SetLogLevel(3)
+	c.Assert(err, IsNil)
+	c.Assert(IsDebug(), Equals, false)
+
+	err = SetLogLevel(5)
+	c.Assert(err, IsNil)
+	c.Assert(IsDebug(), Equals, true)
 }
