@@ -23,6 +23,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"os"
 )
 
 func Formatf(msg string, a ...interface{}) string {
@@ -199,6 +200,11 @@ func (cs ConsoleOutput) SetDecorated(decorated bool) {
 }
 
 func (cs ConsoleOutput) hasColorSupport() bool {
+	// Follow https://no-color.org/
+	if os.Getenv("NO_COLOR") != "" {
+		return false
+	}
+
 	if HasPosixColorSupport() {
 		return true
 	}
