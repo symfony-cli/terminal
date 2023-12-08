@@ -25,5 +25,5 @@ import (
 )
 
 func HasPosixColorSupport() bool {
-	return os.Getenv("ANSICON") != "" || os.Getenv("ConEmuANSI") == "ON" || strings.HasPrefix(os.Getenv("TERM"), "xterm") || os.Getenv("SHLVL") != ""
+	return os.Getenv("ANSICON") != "" || os.Getenv("ConEmuANSI") == "ON" || strings.HasPrefix(os.Getenv("TERM"), "xterm") || os.Getenv("TERM_PROGRAM") == "Hyper" || os.Getenv("SHLVL") != ""
 }
