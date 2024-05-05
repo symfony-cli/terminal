@@ -22,7 +22,6 @@ package terminal
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 )
 
@@ -108,7 +107,7 @@ func NewOutput(w io.Writer, formatter *Formatter) *Output {
 }
 
 func (o Output) IsQuiet() bool {
-	return o.writer == ioutil.Discard
+	return o.writer == io.Discard
 }
 
 func (o Output) Fd() uintptr {
@@ -230,7 +229,7 @@ func setupLogLevelStyle(formatter *Formatter) {
 func init() {
 	DefaultStdout = RemapOutput(defaultOutputs())
 	DiscardedOutput = &Output{
-		ioutil.Discard,
+		io.Discard,
 		NewFormatter(),
 	}
 }
