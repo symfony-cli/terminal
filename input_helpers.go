@@ -39,7 +39,10 @@ func AskStringDefault(message, def string, validator func(string) (string, bool)
 
 	reader := bufio.NewReader(Stdin)
 	for {
-		Print(message)
+		if _, err := Print(message); err != nil {
+			Logger.Err(err).Msg("could not write to terminal")
+			return def
+		}
 		answer, readError := reader.ReadString('\n')
 		if readError != nil {
 			continue

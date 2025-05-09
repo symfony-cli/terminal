@@ -23,6 +23,7 @@ import (
 	"bytes"
 	"strings"
 
+	"github.com/rs/zerolog/log"
 	. "gopkg.in/check.v1"
 )
 
@@ -104,7 +105,9 @@ var _ = Suite(&OutputFormatterSuite{})
 
 func (formatter *Formatter) formatString(msg string) string {
 	buf := bytes.NewBuffer([]byte(``))
-	formatter.Format([]byte(msg), buf)
+	if _, err := formatter.Format([]byte(msg), buf); err != nil {
+		log.Err(err)
+	}
 
 	return buf.String()
 }

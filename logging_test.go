@@ -29,7 +29,9 @@ type LoggingSuite struct{}
 var _ = Suite(&LoggingSuite{})
 
 func (ts *LoggingSuite) TestSetLogLevel(c *C) {
-	defer SetLogLevel(1)
+	defer func() {
+		c.Assert(SetLogLevel(1), IsNil)
+	}()
 	var err error
 	c.Assert(Logger.GetLevel(), Equals, zerolog.ErrorLevel)
 	c.Assert(GetLogLevel(), Equals, 1)
@@ -57,7 +59,9 @@ func (ts *LoggingSuite) TestSetLogLevel(c *C) {
 }
 
 func (ts *LoggingSuite) TestIsVerbose(c *C) {
-	defer SetLogLevel(1)
+	defer func() {
+		c.Assert(SetLogLevel(1), IsNil)
+	}()
 	var err error
 
 	c.Assert(IsVerbose(), Equals, false)
@@ -72,7 +76,9 @@ func (ts *LoggingSuite) TestIsVerbose(c *C) {
 }
 
 func (ts *LoggingSuite) TestIsDebug(c *C) {
-	defer SetLogLevel(1)
+	defer func() {
+		c.Assert(SetLogLevel(1), IsNil)
+	}()
 	var err error
 
 	c.Assert(IsDebug(), Equals, false)

@@ -72,9 +72,9 @@ func (s *styleStack) current() *FormatterStyle {
 const tagRegex = "[a-z][^<>]*"
 
 var (
-	FormattingRegexp = regexp.MustCompile("(?i)<((" + tagRegex + ")?|/(" + tagRegex + ")?)>")
-	StyleRegexp      = regexp.MustCompile("(?i)([^=]+)=([^;]+)(;|$)")
-	EscapingRegexp   = regexp.MustCompile("([^\\\\]?)<")
+	FormattingRegexp = regexp.MustCompile(`(?i)<((` + tagRegex + ")?|/(" + tagRegex + ")?)>")
+	StyleRegexp      = regexp.MustCompile(`(?i)([^=]+)=([^;]+)(;|$)`)
+	EscapingRegexp   = regexp.MustCompile(`([^\\]?)<`)
 )
 
 func Escape(msg []byte) []byte {
@@ -231,11 +231,11 @@ func (formatter *Formatter) Format(msg []byte, w io.Writer) (written int, err er
 
 	msg = output.Bytes()
 	if bytes.Contains(msg, []byte("<<")) {
-		msg = bytes.Replace(msg, []byte("\\<"), []byte("\\<"), -1)
-		msg = bytes.Replace(msg, []byte("<<"), []byte("\\"), -1)
+		msg = bytes.ReplaceAll(msg, []byte("\\<"), []byte("\\<"))
+		msg = bytes.ReplaceAll(msg, []byte("<<"), []byte("\\"))
 	}
 
-	msg = bytes.Replace(msg, []byte("\\<"), []byte("<"), -1)
+	msg = bytes.ReplaceAll(msg, []byte("\\<"), []byte("<"))
 	_, err = w.Write(msg)
 
 	return

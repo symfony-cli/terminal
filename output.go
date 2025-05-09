@@ -23,6 +23,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+
+	"github.com/pkg/errors"
 )
 
 func Formatf(msg string, a ...interface{}) string {
@@ -36,55 +38,63 @@ func Format(msg string) string {
 // Print formats using the default formats for its operands and writes to standard output.
 // Spaces are added between operands when neither is a string.
 // It returns the number of bytes written and any write error encountered.
-func Print(a ...interface{}) (n int, err error) {
-	return fmt.Fprint(Stdout, a...)
+func Print(a ...interface{}) (int, error) {
+	n, err := fmt.Fprint(Stdout, a...)
+	return n, errors.WithStack(err)
 }
 
 // Printf formats according to a format specifier and writes to standard output.
 // It returns the number of bytes written and any write error encountered.
-func Printf(format string, a ...interface{}) (n int, err error) {
-	return fmt.Fprintf(Stdout, format, a...)
+func Printf(format string, a ...interface{}) (int, error) {
+	n, err := fmt.Fprintf(Stdout, format, a...)
+	return n, errors.WithStack(err)
 }
 
 // Println formats using the default formats for its operands and writes to standard output.
 // Spaces are always added between operands and a newline is appended.
 // It returns the number of bytes written and any write error encountered.
-func Println(a ...interface{}) (n int, err error) {
-	return fmt.Fprintln(Stdout, a...)
+func Println(a ...interface{}) (int, error) {
+	n, err := fmt.Fprintln(Stdout, a...)
+	return n, errors.WithStack(err)
 }
 
 // Printfln formats according to a format specifier and writes to standard error output.
 // A newline is appended.
 // It returns the number of bytes written and any write error encountered.
-func Printfln(format string, a ...interface{}) (n int, err error) {
-	return fmt.Fprintf(Stdout, format+"\n", a...)
+func Printfln(format string, a ...interface{}) (int, error) {
+	n, err := fmt.Fprintf(Stdout, format+"\n", a...)
+	return n, errors.WithStack(err)
 }
 
 // Eprint formats using the default formats for its operands and writes to standard error output.
 // Spaces are added between operands when neither is a string.
 // It returns the number of bytes written and any write error encountered.
-func Eprint(a ...interface{}) (n int, err error) {
-	return fmt.Fprint(Stderr, a...)
+func Eprint(a ...interface{}) (int, error) {
+	n, err := fmt.Fprint(Stderr, a...)
+	return n, errors.WithStack(err)
 }
 
 // Eprintf formats according to a format specifier and writes to standard error output.
 // It returns the number of bytes written and any write error encountered.
-func Eprintf(format string, a ...interface{}) (n int, err error) {
-	return fmt.Fprintf(Stderr, format, a...)
+func Eprintf(format string, a ...interface{}) (int, error) {
+	n, err := fmt.Fprintf(Stderr, format, a...)
+	return n, errors.WithStack(err)
 }
 
 // Eprintln formats using the default formats for its operands and writes to standard error output.
 // Spaces are always added between operands and a newline is appended.
 // It returns the number of bytes written and any write error encountered.
-func Eprintln(a ...interface{}) (n int, err error) {
-	return fmt.Fprintln(Stderr, a...)
+func Eprintln(a ...interface{}) (int, error) {
+	n, err := fmt.Fprintln(Stderr, a...)
+	return n, errors.WithStack(err)
 }
 
 // Eprintfln formats according to a format specifier and writes to standard error output.
 // A newline is appended.
 // It returns the number of bytes written and any write error encountered.
-func Eprintfln(format string, a ...interface{}) (n int, err error) {
-	return fmt.Fprintf(Stderr, format+"\n", a...)
+func Eprintfln(format string, a ...interface{}) (int, error) {
+	n, err := fmt.Fprintf(Stderr, format+"\n", a...)
+	return n, errors.WithStack(err)
 }
 
 var (
@@ -144,7 +154,7 @@ func (o Output) Write(message []byte) (int, error) {
 
 func (o Output) Close() error {
 	if wc, ok := o.writer.(io.WriteCloser); ok {
-		return wc.Close()
+		return errors.WithStack(wc.Close())
 	}
 
 	return nil
