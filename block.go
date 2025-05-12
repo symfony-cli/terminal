@@ -60,7 +60,7 @@ func splitsBlockLines(msg string, width int) ([]string, int) {
 	}
 
 	for _, line := range strings.Split(msg, "\n") {
-		line = strings.Replace(line, "\t", "        ", -1)
+		line = strings.ReplaceAll(line, "\t", "        ")
 		lastLinePos := 0
 		inAnOpeningTag := false
 		inAClosingTag := false

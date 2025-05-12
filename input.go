@@ -23,6 +23,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+
+	"github.com/pkg/errors"
 )
 
 var (
@@ -36,14 +38,16 @@ var (
 // space-separated values into successive arguments. Newlines count
 // as space. It returns the number of items successfully scanned.
 // If that is less than the number of arguments, err will report why.
-func Scan(a ...interface{}) (n int, err error) {
-	return fmt.Fscan(Stdin, a...)
+func Scan(a ...interface{}) (int, error) {
+	n, err := fmt.Fscan(Stdin, a...)
+	return n, errors.WithStack(err)
 }
 
 // Scanln is similar to Scan, but stops scanning at a newline and
 // after the final item there must be a newline or EOF.
-func Scanln(a ...interface{}) (n int, err error) {
-	return fmt.Fscanln(Stdin, a...)
+func Scanln(a ...interface{}) (int, error) {
+	n, err := fmt.Fscanln(Stdin, a...)
+	return n, errors.WithStack(err)
 }
 
 // Scanf scans text read from standard input, storing successive
@@ -53,8 +57,9 @@ func Scanln(a ...interface{}) (n int, err error) {
 // Newlines in the input must match newlines in the format.
 // The one exception: the verb %c always scans the next rune in the
 // input, even if it is a space (or tab etc.) or newline.
-func Scanf(format string, a ...interface{}) (n int, err error) {
-	return fmt.Fscanf(Stdin, format, a...)
+func Scanf(format string, a ...interface{}) (int, error) {
+	n, err := fmt.Fscanf(Stdin, format, a...)
+	return n, errors.WithStack(err)
 }
 
 type Input struct {
@@ -78,7 +83,8 @@ func NewInput(reader io.Reader) *Input {
 }
 
 func (input *Input) Read(p []byte) (int, error) {
-	return input.reader.Read(p)
+	n, err := input.reader.Read(p)
+	return n, errors.WithStack(err)
 }
 
 func (input *Input) IsInteractive() bool {

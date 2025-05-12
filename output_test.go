@@ -46,7 +46,8 @@ func (ts *ConsoleOutputSuite) TestConsoleOutput(c *C) {
 	buffer := new(bytes.Buffer)
 	output := NewBufferedConsoleOutput(buffer, buffer)
 
-	output.Write([]byte("test"))
+	_, err := output.Write([]byte("test"))
+	c.Assert(err, IsNil)
 	c.Assert(buffer.String(), Equals, "test")
 
 	formatter := NewFormatter()
@@ -82,34 +83,42 @@ func (ts *ConsoleOutputSuite) TestWrappers(c *C) {
 	Stderr = Stdout.Stderr
 
 	bufferStdout.Reset()
-	Print("test")
+	_, err := Print("test")
+	c.Assert(err, IsNil)
 	c.Check(bufferStdout.String(), Equals, "test")
 
 	bufferStdout.Reset()
-	Println("test")
+	_, err = Println("test")
+	c.Assert(err, IsNil)
 	c.Check(bufferStdout.String(), Equals, "test\n")
 
 	bufferStdout.Reset()
-	Printf("test %d", 2)
+	_, err = Printf("test %d", 2)
+	c.Assert(err, IsNil)
 	c.Check(bufferStdout.String(), Equals, "test 2")
 
 	bufferStdout.Reset()
-	Printfln("test %d", 3)
+	_, err = Printfln("test %d", 3)
+	c.Assert(err, IsNil)
 	c.Check(bufferStdout.String(), Equals, "test 3\n")
 
 	bufferStderr.Reset()
-	Eprint("test")
+	_, err = Eprint("test")
+	c.Assert(err, IsNil)
 	c.Check(bufferStderr.String(), Equals, "test")
 
 	bufferStderr.Reset()
-	Eprintln("test")
+	_, err = Eprintln("test")
+	c.Assert(err, IsNil)
 	c.Check(bufferStderr.String(), Equals, "test\n")
 
 	bufferStderr.Reset()
-	Eprintf("test %d", 2)
+	_, err = Eprintf("test %d", 2)
+	c.Assert(err, IsNil)
 	c.Check(bufferStderr.String(), Equals, "test 2")
 
 	bufferStderr.Reset()
-	Eprintfln("test %d", 3)
+	_, err = Eprintfln("test %d", 3)
+	c.Assert(err, IsNil)
 	c.Check(bufferStderr.String(), Equals, "test 3\n")
 }

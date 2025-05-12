@@ -101,7 +101,7 @@ func (s *Spinner) Start() {
 					fmt.Fprintf(&b, "%s%s%s  %s%s", s.PrefixText, s.PrefixIndicator, s.chars[i], s.SuffixIndicator, s.SuffixText)
 					cursor.ClearLineAfter()
 					cursor.RestorePosition()
-					b.WriteTo(s.Writer)
+					_, _ = b.WriteTo(s.Writer)
 					s.lock.Unlock()
 					time.Sleep(s.delay)
 				}
